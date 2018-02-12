@@ -1,0 +1,28 @@
+{
+  "name": "treehouse-project-4",
+  "version": "1.0.0",
+  "description": "Example of Tic-Tac-Toe Project after Unit 4 FSJS Treehouse courses",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "author": "Max Eremin",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.38",
+    "@babel/preset-env": "^7.0.0-beta.38",
+    "babel-plugin-inline-json-import": "^0.2.1",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0-beta.0",
+    "gulp-webserver": "^0.9.1",
+    "susy": "^3.0.3"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ermaxnet/threehouse-project-4.git"
+  }
+}

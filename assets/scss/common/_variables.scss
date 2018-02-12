@@ -1,0 +1,22 @@
+$compatible-fonts: Helvetica, Arial, sans-serif;
+
+$base-text-color: rgba(0, 0, 0, .87);
+$inaccent-text-color: rgba(0, 0, 0, .54);
+$disabled-text-color: rgba(0, 0, 0, .36);
+$accent-text-color: #0091EA;
+$fill-background-color: rgba(204, 204, 204, 1);
+
+$base-border-color: rgba(219, 219, 219, 1);
+$disabled-border-color: $disabled-text-color;
+$accent-border-color: #E64A19;
+
+$accent-background-color: $accent-border-color;
+$disabled-background-color: $disabled-text-color;
+$game-background-color: #6A1B9A;
+
+$error-color: #FF1744;
+
+$screen-min-width-small: 768px;
+$screen-min-width-mid: 1000px;
+$screen-min-width-large: 1210px;
+$screen-min-width-xlarge: 1920px;
