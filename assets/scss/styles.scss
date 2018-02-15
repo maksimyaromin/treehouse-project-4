@@ -98,3 +98,25 @@ $susy: (
         border-color: $game-accent-border-color;
     }
 }
+
+.game-board {
+    max-width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-gap: 1px;
+
+    .game-cell {
+        height: 100px;
+        background-color: white;
+        text-align: center;
+        @include game-bold(36px, 100px);
+
+        &.game-cell_won {
+            background-color: #e5e3e2;
+        }
+    }
+}
+
