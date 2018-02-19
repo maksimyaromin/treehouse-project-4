@@ -76,16 +76,127 @@ $susy: (
     }
 
     &-space {
+        position: relative;
         flex: 2 susy-span(8 of 12);
         height: 100%;
         background-color: $game-background-color;
+    }
+
+    &-header {
+        padding: 72px 48px 0;
+        @include bold(32px, 38px);
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    &-options {
+        width: 100%;
+        max-height: calc(100% - 110px - 48px);
+        padding: 0 48px;
+        margin-top: 48px;
+        overflow-y: auto;
+
+        .form-actions {
+            margin-bottom: 48px;
+        }
+
+        .game-options-label {
+            margin: 10px 0;
+            color: $inaccent-text-color;
+            @include light(18px, 36px);
+        }
+
+        .game-player-color {
+            display: inline-flex;
+            justify-content: flex-start;
+
+            &-item {
+                display: block;
+                width: 48px;
+                height: 48px;
+                cursor: pointer;
+
+                &_red {
+                    background-color: $red-player-color;
+                }
+
+                &_green {
+                    background-color: $green-player-color;
+                }
+
+                &_blue {
+                    background-color: $blue-player-color;
+                }
+
+                &_yellow {
+                    background-color: $yellow-player-color;
+                }
+
+                @include transition(
+                    transform 250ms ease-in-out, 
+                    border 250ms ease-in-out,
+                    background-color 250ms ease-in-out
+                );
+            }
+
+            .form__radio:checked + .game-player-color-item {
+                @include scale(1.1);
+                border: 2px solid $game-background-color;
+            }
+
+            .form__radio[disabled] + .game-player-color-item {
+                background-color: $disabled-background-color;
+                pointer-events: none;
+            }
+        }
+
+        .game-shape {
+            display: inline-flex;
+            justify-content: center;
+
+            &-item {
+                display: block;
+                width: 100px;
+                height: 100px;
+                margin: 0 21px;
+                padding: 14px;
+                cursor: pointer;
+                background-color: $fill-background-color;
+                border-radius: 2px;
+                @include transition(background-color 250ms ease-in-out);
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                    fill: $inaccent-text-color;
+                    @include transition(fill 250ms ease-in-out);
+                }
+
+                &:hover {
+                    background-color: $accent-background-color;
+                    
+                    svg {
+                        fill: white;
+                    }
+                }
+            }
+
+            .form__radio:checked + .game-shape-item {
+                background-color: $accent-background-color;
+
+                svg {
+                    fill: white;
+                }
+            }
+
+        }
     }
 }
 
 .btn-game {
     width: 100%;
     height: 75px;
-    @include game-regular(22px, 75px);
+    @include regular(22px, 75px);
     text-transform: none;
     @include box-shadow(3px 3px 4px 2px rgba(0, 0, 0, .39));
     border-radius: 0;
@@ -108,15 +219,126 @@ $susy: (
     align-content: center;
     grid-gap: 1px;
 
+    &[data-shape] {
+        .game-cell:hover {
+            background-position: center;
+            background-size: 72px 72px;
+            background-repeat: no-repeat;
+        }
+    }
+
+    &[data-shape~="x"] {
+        .game-cell:not(.game-cell_move-on):hover {
+            background-image: image-url("x.svg");
+        }
+    }
+
+    &[data-shape~="o"] {
+        .game-cell:not(.game-cell_move-on):hover {
+            background-image: image-url("o.svg");
+        }
+    }
+
     .game-cell {
         height: 100px;
         background-color: white;
-        text-align: center;
-        @include game-bold(36px, 100px);
+        padding: 14px;
+        @include transition(background-color 250ms ease-in);
+        
+        svg {
+            width: 100%;
+            height: 100%;
+            @include transition(fill 250ms ease-in);
+        }
 
         &.game-cell_won {
-            background-color: #e5e3e2;
+            background-color: $accent-background-color;
+                    
+            svg {
+                fill: white;
+            }
         }
     }
 }
 
+.form {
+    &__group {
+        &[data-player-color~="red"]::before {
+            background-image: linear-gradient(to right, $red-player-color 0%, $base-border-color 10%);
+        }
+
+        &[data-player-color~="green"]::before {
+            background-image: linear-gradient(to right, $green-player-color 0%, $base-border-color 10%);
+        }
+
+        &[data-player-color~="blue"]::before {
+            background-image: linear-gradient(to right, $blue-player-color 0%, $base-border-color 10%);
+        }
+
+        &[data-player-color~="yellow"]::before {
+            background-image: linear-gradient(to right, $yellow-player-color 0%, $base-border-color 10%);
+        }
+    }
+}
+
+.game-scoreboard {
+    position: absolute;
+    display: inline-flex;
+    width: 100%;
+    padding: 0 48px;
+    justify-content: space-between;
+
+    .game-player {
+        flex: 1 350px;
+        max-width: 350px;
+        height: 100px;
+        padding: 22px 0 0;
+
+        &-shape {
+            display: inline-block;
+            width: 78px;
+            height: 78px;
+            padding: 14px;
+            background-color: white;
+            border-radius: 50%;
+            vertical-align: middle;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &-name {
+            display: inline-block;
+            padding: 0 21px;
+            color: white;
+            @include bold(24px, 78px);
+            vertical-align: middle;
+        }
+
+        &-score {
+            display: inline-block;
+            padding: 0 21px;
+            color: white;
+            @include bold(32px, 78px);
+            vertical-align: middle;
+        }
+    }
+}
+
+.red {
+    fill: $red-player-color;
+}
+
+.green {
+    fill: $green-player-color;
+}
+
+.blue {
+    fill: $blue-player-color;
+}
+
+.yellow {
+    fill: $yellow-player-color;
+}

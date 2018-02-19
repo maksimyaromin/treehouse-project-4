@@ -18,28 +18,7 @@
     @include font($options...);
 }
 
-@mixin game-light($options...) {
-    font-weight: 300;
-    @include game-font($options...);
-}
-
-@mixin game-regular($options...) {
-    font-weight: 400;
-    @include game-font($options...);
-}
-
-@mixin game-bold($options...) {
-    font-weight: 700;
-    @include game-font($options...);
-}
-
 @mixin font($size, $line-height) {
-    font-family: Roboto, $compatible-fonts;
-    font-size: $size;
-    line-height: $line-height;
-}
-
-@mixin game-font($size, $line-height) {
     font-family: "Averia Serif Libre", cursive;
     font-size: $size;
     line-height: $line-height;
