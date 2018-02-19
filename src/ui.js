@@ -203,5 +203,40 @@ const ui = {
         });
         scoreBoardHTML += "</section>";
         return $(scoreBoardHTML).prependTo(context);
+    },
+    getGameRaundsCounterHTML(context, raunds, moves) {
+        if(!context) { return; }
+        const gameRaundsCounterHTML = `
+            <div class="game-raunds-counter">
+                <span>${raunds} / ${moves}</span>
+            </div>`;
+        return $(gameRaundsCounterHTML).prependTo(context);
+    },
+    getGameMenuButtonHTML(context) {
+        if(!context) { return; }
+        const gameMenuBottonHTML = `<div class="game-menu-button" id="openMenu"></div>`;
+        return $(gameMenuBottonHTML).prependTo(context);
+    },
+    getGameMenuHTML(context) {
+        if(!context) { return; }
+        const gameMenuHTML = `
+            <header class="game-header">
+                <span>Pause in Game</span>
+            </header>
+            <ul class="game-toolbar__actions">
+                <li class="game-toolbar__action">
+                    <button id="continueButton" 
+                        class="btn btn-primary btn-game">Continue Game</button>
+                </li>
+                <li class="game-toolbar__action">
+                    <button id="resetButton" 
+                        class="btn btn-primary btn-game">Reset Game</button>
+                </li>
+                <li class="game-toolbar__action">
+                    <button id="newButton" 
+                        class="btn btn-primary btn-game">New Game</button>
+                </li>
+            </ul>`;
+        return $(gameMenuHTML).prependTo(context);
     }
 };

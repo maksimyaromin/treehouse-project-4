@@ -57,5 +57,29 @@ var ui = {
     });
     scoreBoardHTML += "</section>";
     return $(scoreBoardHTML).prependTo(context);
+  },
+  getGameRaundsCounterHTML: function getGameRaundsCounterHTML(context, raunds, moves) {
+    if (!context) {
+      return;
+    }
+
+    var gameRaundsCounterHTML = "\n            <div class=\"game-raunds-counter\">\n                <span>".concat(raunds, " / ").concat(moves, "</span>\n            </div>");
+    return $(gameRaundsCounterHTML).prependTo(context);
+  },
+  getGameMenuButtonHTML: function getGameMenuButtonHTML(context) {
+    if (!context) {
+      return;
+    }
+
+    var gameMenuBottonHTML = "<div class=\"game-menu-button\" id=\"openMenu\"></div>";
+    return $(gameMenuBottonHTML).prependTo(context);
+  },
+  getGameMenuHTML: function getGameMenuHTML(context) {
+    if (!context) {
+      return;
+    }
+
+    var gameMenuHTML = "\n            <header class=\"game-header\">\n                <span>Pause in Game</span>\n            </header>\n            <ul class=\"game-toolbar__actions\">\n                <li class=\"game-toolbar__action\">\n                    <button id=\"continueButton\" \n                        class=\"btn btn-primary btn-game\">Continue Game</button>\n                </li>\n                <li class=\"game-toolbar__action\">\n                    <button id=\"resetButton\" \n                        class=\"btn btn-primary btn-game\">Reset Game</button>\n                </li>\n                <li class=\"game-toolbar__action\">\n                    <button id=\"newButton\" \n                        class=\"btn btn-primary btn-game\">New Game</button>\n                </li>\n            </ul>";
+    return $(gameMenuHTML).prependTo(context);
   }
 };

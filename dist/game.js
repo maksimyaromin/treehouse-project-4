@@ -7,6 +7,7 @@ var Game = function Game(toolbarContext, gameContext) {
   this.gameContext = gameContext;
   this.players = [];
   this.moves = 0;
+  this.raunds = 0;
   Object.defineProperty(this, "next", {
     get: function get() {
       var currentPlayer = null;
@@ -124,6 +125,8 @@ Game.prototype.start = function () {
     _this2.play(player1, player2, gameBoard);
 
     gameOptionsHTML.remove();
+
+    _this2.gameContext.closest(".game").addClass("game-started");
   });
 };
 
@@ -132,12 +135,22 @@ Game.prototype.play = function (player1, player2, gameBoard) {
 
   this.addPlayer(player1);
   this.addPlayer(player2);
+  this.updateRaundsCounter();
   this.updateScoreBoard();
+  var menuButton = ui.getGameMenuButtonHTML(this.gameContext);
+  menuButton.on("click", function () {
+    return _this3.openMenu();
+  });
   this.board = gameBoard;
   this.board.create(function (row, column, cell) {
     return _this3.nextMove(row, column, cell);
   });
   this.move();
+};
+
+Game.prototype.openMenu = function () {
+  var gameMenu = ui.getGameMenuHTML(this.toolbarContext);
+  this.gameContext.closest(".game").removeClass("game-started");
 };
 
 Game.prototype.move = function () {
@@ -165,11 +178,13 @@ Game.prototype.nextMove = function (row, column, cell) {
   cell.html(shape);
   cell.addClass("game-cell_move-on");
   this.moves++;
+  this.updateRaundsCounter();
 
   if (this.moves >= 2 * this.board.size - 1) {
     var winner = this.board.check();
 
     if (winner) {
+      this.raunds++;
       setTimeout(function () {
         _this4.refresh(winner);
       }, 3000);
@@ -191,6 +206,11 @@ Game.prototype.updateScoreBoard = function () {
   this.scoreBoardContext = ui.getScoreBoardHTML(this.gameContext, this.players);
 };
 
+Game.prototype.updateRaundsCounter = function () {
+  if (this.raundsCounterContext) this.raundsCounterContext.remove();
+  this.raundsCounterContext = ui.getGameRaundsCounterHTML(this.gameContext, this.raunds + 1, this.moves);
+};
+
 Game.prototype.refresh = function (winner) {
   var _this5 = this;
 
@@ -208,5 +228,6 @@ Game.prototype.refresh = function (winner) {
     return _this5.nextMove(row, column, cell);
   });
   this.moves = 0;
+  this.updateRaundsCounter();
   this.move();
 };

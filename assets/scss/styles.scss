@@ -3,6 +3,7 @@
 @import "compass/css3/transition";
 @import "compass/css3/transform";
 @import "compass/utilities/general/clearfix";
+@import "compass/css3/border-radius";
 @import "../../node_modules/susy/sass/susy";
 
 @import "common/variables";
@@ -17,24 +18,6 @@
 @import "common/forms";
 @import "common/buttons";
 
-/* .footer-wrapper {
-    width: 980px;
-    max-width: 90%;
-    height: 100%;
-    margin: auto;
-}
-
-.form-container {
-    max-width: 640px;
-    height: auto;
-    margin: 120px auto;
-    padding: 28px 35px;
-    background-color: white;
-    border-radius: 5px;
-    @include box-shadow(0 2px 2px 2px rgba(0, 0, 0, .15),
-                        0 7px 12px rgba(0, 0, 0, .25));
-} */
-
 $susy: (
     'columns': susy-repeat(12),
     'gutters': 0.25,
@@ -48,18 +31,46 @@ $susy: (
 }
 
 .game {
-    display: flex;
     width: 100%;
     height: 100%;
+    min-width: 580px;
+
+    @include media-large {
+        display: flex;
+    }
+
+    &.game-started {
+        .game-toolbar {
+            @include translateY(-100%);
+
+            @include media-large() {
+                @include translateY(0);
+                @include translateX(-100%);
+            }
+        }
+
+        .game-space {
+            @include translateY(-100%);
+            display: block;
+
+            @include media-large() {
+                @include translateY(0);
+            }
+        }
+    }
 
     &-toolbar {
-        flex: 1 susy-span(4 of 12);
-        height: 100%;
+        position: relative;
+        width: susy-span(12 of 12);
+        min-height: 100vh;
         background-color: white;
+        padding-bottom: 34px;
         @include box-shadow(
             2px 0 0 5px rgba(0, 0, 0, .19),
             1px 0 5px 3px rgba(0, 0, 0, .39));
         z-index: 999;
+        @include translateY(0);
+        @include transition(transform 500ms ease-in-out);
 
         &__actions {
             width: 100%;
@@ -73,13 +84,40 @@ $susy: (
                 margin-top: 21px;
             }
         }
+        
+        .footer {
+            height: 34px;
+            padding: 0 48px;
+            background-color: white;
+        
+            .footer__copyright,
+            .footer__regards {
+                @include font(12px, 34px);
+            }
+        }
+
+        @include media-large() {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: susy-span(4 of 12);
+            height: 100%;
+            @include translateY(0);
+            @include translateX(0);
+        }
     }
 
     &-space {
         position: relative;
-        flex: 2 susy-span(8 of 12);
+        width: susy-span(12 of 12);
         height: 100%;
+        display: none;
         background-color: $game-background-color;
+        @include transition(transform 500ms ease-in-out);
+
+        @include media-large() {
+            padding-left: susy-span(4 of 12);
+        }
     }
 
     &-header {
@@ -91,10 +129,14 @@ $susy: (
 
     &-options {
         width: 100%;
-        max-height: calc(100% - 110px - 48px);
+        height: auto;
         padding: 0 48px;
         margin-top: 48px;
         overflow-y: auto;
+
+        @include media-large() {
+            max-height: calc(100% - 110px - 48px);
+        }
 
         .form-actions {
             margin-bottom: 48px;
@@ -294,6 +336,10 @@ $susy: (
         height: 100px;
         padding: 22px 0 0;
 
+        &:nth-child(1) {
+            direction: rtl;
+        }
+
         &-shape {
             display: inline-block;
             width: 78px;
@@ -341,4 +387,46 @@ $susy: (
 
 .yellow {
     fill: $yellow-player-color;
+}
+
+.game-raunds-counter {
+    position: absolute;
+    top: 100px;
+    width: auto;
+    left: 50%;
+    padding: 0 21px;
+    margin-top: 21px;
+    @include bold(28px, 48px);
+    background-color: white;
+    color: $game-background-color;
+    @include translateX(-50%);
+}
+
+.game-menu-button {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    @include border-bottom-radius(50%);
+    left: 50%;
+    @include translateX(-50%);
+    background-color: white;
+    cursor: pointer;
+    @include transition(height 250ms ease-in);
+    z-index: 9999;
+
+    &:hover {
+        height: 30px;
+    }
+
+    &::after {
+        position: absolute;
+        content: "";
+        width: 10px;
+        height: 10px;
+        border: 0 solid $game-background-color;
+        border-width: 0 2px 2px 0;
+        left: 5px;
+        bottom: 5px;
+        @include rotate(45deg);
+    }
 }
