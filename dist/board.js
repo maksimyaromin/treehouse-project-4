@@ -1,3 +1,7 @@
+/* Объект, представляющий игровое поле
+    гэймКонтекст - селектор для вставки поля
+    сайз - размер поля - может быть от 3 до 5
+*/
 var Board = function Board(gameContext) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
   this.gameContext = gameContext;
@@ -10,8 +14,15 @@ var Board = function Board(gameContext) {
   ;
   this.size = size;
   this.board = [];
+  /* Заполнить поле значениями по-умолчанию
+  */
+
   this.fill();
 };
+/* Вспомогательная функция для копирования текущего состояния
+    игрового поля
+*/
+
 
 Board.prototype.copyBoard = function () {
   var board = [];
@@ -28,6 +39,10 @@ Board.prototype.copyBoard = function () {
 
   return board;
 };
+/* Создать хтмл представление игрового поля и повесить обработчик
+    нажатия на клетку. На каждую клетку человек может нажать только один раз
+*/
+
 
 Board.prototype.create = function (move) {
   this.boardContext = ui.getGameBoardHTML(this.gameContext, this.size);
@@ -38,6 +53,11 @@ Board.prototype.create = function (move) {
     move(row, column, cell);
   });
 };
+/* На программном уровне игровое поле представялет собой матрицу
+    сайз на сайз, заполненную по умолчанию -1. Эта функция заполняет матрицу
+    значениями по умолчанию.
+*/
+
 
 Board.prototype.fill = function () {
   for (var i = 0; i < this.size; i++) {
@@ -50,6 +70,9 @@ Board.prototype.fill = function () {
     this.board.push(row);
   }
 };
+/* Логика проверки победы
+*/
+
 
 Board.prototype.check = function () {
   var board = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -59,6 +82,9 @@ Board.prototype.check = function () {
   var lastIndex = this.size - 1;
 
   for (var i = 0; i < this.size; i++) {
+    /* За проверочное значение выбирается значение в перекресной клетке
+        Например для поля 3 на 3 мы будем проверять значения 00, 11, 22 - т. е. диагональ
+    */
     var x = board[i][i];
     var X = true,
         Y = true,
@@ -66,26 +92,44 @@ Board.prototype.check = function () {
         Db = i === 0;
 
     for (var j = 0; j < this.size; j++) {
+      /* Если значение -1, то увеличить счетчик пустых клеток
+      */
       if (board[i][j] === -1) {
         freeCells++;
       }
+      /* Проверить строку с проверочным значением
+      */
+
 
       if (x === -1 || board[i][j] !== x) {
         X = false;
       }
+      /* Проверить столбец с проверочным значением
+      */
+
 
       if (x === -1 || board[j][i] !== x) {
         Y = false;
       }
+      /* На первом шаге так же проверяем главную диагональ
+      */
+
 
       if (D && (x === -1 || board[j][j] !== x)) {
         D = false;
       }
+      /* и побочную диагональ
+      */
+
 
       if (Db && (board[lastIndex][0] === -1 || board[lastIndex - j][j] !== board[lastIndex][0])) {
         Db = false;
       }
     }
+    /* Если проверка принесла результат - вовзращаем результативный объект с типом
+        победы
+    */
+
 
     if (X || Y || D || Db) {
       var type = void 0,
@@ -110,15 +154,24 @@ Board.prototype.check = function () {
       break;
     }
   }
+  /* Если пустые клетки заканчиваются - то вренуть ничью
+  */
+
 
   return result ? result : freeCells ? result : {
     player: -1
   };
 };
+/* Игрок сделал ход
+*/
+
 
 Board.prototype.move = function (shape, row, column) {
   this.board[row][column] = shape;
 };
+/* Остановить игру и отметить победную линию
+*/
+
 
 Board.prototype.stop = function (winner) {
   var _this = this;
@@ -175,6 +228,9 @@ Board.prototype.stop = function (winner) {
     ;
   });
 };
+/* Обновить игровое поле
+*/
+
 
 Board.prototype.refresh = function (move) {
   this.boardContext.remove();

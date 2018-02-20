@@ -2,6 +2,10 @@ function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; 
 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return _sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
 
+/* Объект с основной логикой игры
+    на вход принимает селекторы ДОМ панели настроек и 
+    игровой контекст
+*/
 var Game = function Game(toolbarContext, gameContext) {
   this.toolbarContext = toolbarContext;
   this.gameContext = gameContext;
@@ -24,6 +28,9 @@ var Game = function Game(toolbarContext, gameContext) {
   });
   this.new();
 };
+/* Начать новую игру
+*/
+
 
 Game.prototype.new = function () {
   var _this = this;
@@ -36,6 +43,13 @@ Game.prototype.new = function () {
     _this.start();
   });
 };
+/* Настройка игровых параметров
+    у пользователя есть возможнотсть выбрать размер игрового поля
+    количество игроков (1 или 2)
+    задать имя для каждого игрока и выбрать его цвет
+    а так же выбрать фигуру, если пользователь играет с компьютером
+*/
+
 
 Game.prototype.start = function () {
   var _this2 = this;
@@ -103,6 +117,11 @@ Game.prototype.start = function () {
     return togglePlayersCount($(e.target));
   });
   togglePlayersCount(playerCountSwitch);
+  /* В случае если пользователь не указал никаких настроек то начнется 
+      игра на поле 3 на 3 с компьютером. Цвет пользователя будет красным а имя GoodKat,
+      цвет компьютера будет синим, а имя PDP-11 
+  */
+
   var btnPlay = gameOptionsHTML.find("#btnPlay");
   btnPlay.on("click", function (e) {
     e.preventDefault();
@@ -129,34 +148,88 @@ Game.prototype.start = function () {
     _this2.gameContext.closest(".game").addClass("game-started");
   });
 };
+/* Применить игровые настройки и начать игру
+*/
+
 
 Game.prototype.play = function (player1, player2, gameBoard) {
   var _this3 = this;
 
+  /* Добавить игроков
+  */
   this.addPlayer(player1);
   this.addPlayer(player2);
+  /* Добавить ХТМЛ с панелями очков и счетчиком раундов,
+      а так же кнопку меню
+  */
+
   this.updateRaundsCounter();
   this.updateScoreBoard();
   var menuButton = ui.getGameMenuButtonHTML(this.gameContext);
   menuButton.on("click", function () {
     return _this3.openMenu();
   });
+  /* Создать игровое поле
+  */
+
   this.board = gameBoard;
   this.board.create(function (row, column, cell) {
     return _this3.nextMove(row, column, cell);
   });
+  /* Подготовится к первому шагу
+  */
+
   this.move();
 };
+/* Открыть меню во время игры
+*/
+
 
 Game.prototype.openMenu = function () {
+  var _this4 = this;
+
   var gameMenu = ui.getGameMenuHTML(this.toolbarContext);
   this.gameContext.closest(".game").removeClass("game-started");
+  this.gameContext.addClass("game_menu-opened");
+
+  var closeMenu = function closeMenu() {
+    gameMenu.remove();
+
+    _this4.gameContext.removeClass("game_menu-opened");
+
+    _this4.gameContext.closest(".game").addClass("game-started");
+  };
+
+  var continueButton = gameMenu.find("#continueButton");
+  continueButton.on("click", function () {
+    return closeMenu();
+  });
+  var resetButton = gameMenu.find("#resetButton");
+  resetButton.on("click", function () {
+    return _this4.reload(closeMenu);
+  });
 };
+/* Выбрать текущего игрока и сделать шаг, если играет компьютер
+*/
+
 
 Game.prototype.move = function () {
   var player = this.next;
-  this.player = player;
+  this.player = player; // Выделить имя текущего игрока
+
+  this.scoreBoardContext.find(".game-player").each(function (idndex, element) {
+    element = $(element).removeClass("game-player_move-on");
+
+    if (element.is("[data-player=\"".concat(player.id, "\"]"))) {
+      element.addClass("game-player_move-on");
+    }
+  });
+  /* Представление текущей фигуры
+  */
+
   this.board.boardContext.attr("data-shape", player.shape === GAME_SHAPES.X ? "x" : "o");
+  /* Компьютерный ход
+  */
 
   if (player.isAI) {
     var _player$calculateMove = player.calculateMove(this.board, this.moves),
@@ -168,9 +241,12 @@ Game.prototype.move = function () {
     this.nextMove(row, column, cell);
   }
 };
+/* Совершить ход (обработчик нажатия на клетку или автоход компьютера)
+*/
+
 
 Game.prototype.nextMove = function (row, column, cell) {
-  var _this4 = this;
+  var _this5 = this;
 
   var player = this.player;
   this.board.move(player.shape, row, column);
@@ -179,40 +255,52 @@ Game.prototype.nextMove = function (row, column, cell) {
   cell.addClass("game-cell_move-on");
   this.moves++;
   this.updateRaundsCounter();
+  /* Проверять победу после достаточного числа
+      ходов
+  */
 
   if (this.moves >= 2 * this.board.size - 1) {
     var winner = this.board.check();
 
     if (winner) {
       this.raunds++;
+      var messenge = winner.player === -1 ? "Ничья" : "".concat(player.name, " win");
+      this.raundsCounterContext.html("<span>".concat(messenge, "</span>")); // обновить игру после 3 секунд
+
       setTimeout(function () {
-        _this4.refresh(winner);
-      }, 3000);
+        _this5.refresh(winner);
+      }, 3000); // остановить игру для победителя
+
       return this.board.stop(winner);
     }
-  }
+  } // подготовитья к следующему ходу
+
 
   return this.move();
-};
+}; // Добавить игрока к игру
+
 
 Game.prototype.addPlayer = function (player) {
   if (player instanceof Player) {
     this.players.push(player);
   }
-};
+}; // Обновить панель счета
+
 
 Game.prototype.updateScoreBoard = function () {
   if (this.scoreBoardContext) this.scoreBoardContext.remove();
   this.scoreBoardContext = ui.getScoreBoardHTML(this.gameContext, this.players);
-};
+}; // Обновить счетчик раундов
+
 
 Game.prototype.updateRaundsCounter = function () {
   if (this.raundsCounterContext) this.raundsCounterContext.remove();
   this.raundsCounterContext = ui.getGameRaundsCounterHTML(this.gameContext, this.raunds + 1, this.moves);
-};
+}; // Обновить игру после завершения раунда
+
 
 Game.prototype.refresh = function (winner) {
-  var _this5 = this;
+  var _this6 = this;
 
   this.players = this.players.map(function (player) {
     if (player.shape === winner.player) {
@@ -225,9 +313,29 @@ Game.prototype.refresh = function (winner) {
   });
   this.updateScoreBoard();
   this.board.refresh(function (row, column, cell) {
-    return _this5.nextMove(row, column, cell);
+    return _this6.nextMove(row, column, cell);
   });
   this.moves = 0;
   this.updateRaundsCounter();
+  this.move();
+}; // Сбросить игру через меню
+
+
+Game.prototype.reload = function (closeMenu) {
+  var _this7 = this;
+
+  this.players = this.players.map(function (player) {
+    player.score = 0;
+    player.move = player.shape === GAME_SHAPES.X;
+    return player;
+  });
+  this.raunds = 0;
+  this.moves = 0;
+  this.updateScoreBoard();
+  this.board.refresh(function (row, column, cell) {
+    return _this7.nextMove(row, column, cell);
+  });
+  this.updateRaundsCounter();
+  closeMenu();
   this.move();
 };

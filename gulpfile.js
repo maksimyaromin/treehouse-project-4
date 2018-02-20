@@ -1,7 +1,7 @@
 /*
     Gulpfile.js 
     Max Eremin
-    27.01.2018 13:46 
+    20.02.2018 22:07 
 */
 const gulp = require("gulp");
 const del = require("del");
