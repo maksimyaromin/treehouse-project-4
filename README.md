@@ -8,7 +8,7 @@ My version is quite a bit different from the expected. As usually the main diffe
 
 The one can play a game alone against the computer, or in a pair. For each player you can specify a name, choose one of four colors. And also playing against the computer the player can choose his starting figure. If no settings are specified before game start, the game will start with the default settings.
 
-Also a player can choose the size of the field - 3 by 3, 4 by 4 or 5 by 5. For more information about the logic of the game, see comments in script files. To write scripts I used ES6 and Babel. The transcoded version of the script is connected to the index.html file. However, if you run the game in a modern browser, you can run non-transcoded scripts which you will find in * src /...* path.
+Also a player can choose the size of the field - 3 by 3, 4 by 4 or 5 by 5. For more information about the logic of the game, see comments in script files. To write scripts I used ES6 and Babel. The transcoded version of the script is connected to the index.html file. However, if you run the game in a modern browser, you can run non-transcoded scripts which you will find in *src/...* path.
 
 After round is over, the winner's name appears on the top. After 3 seconds, the playing board would be cleared and a new round will begin.
 
