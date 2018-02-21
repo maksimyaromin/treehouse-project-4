@@ -1,4 +1,4 @@
-/* Хэлпер для получения активного плэйсхолдера
+/* Helper to obtain an active placeholder
 */
 var activePlaceholder = function activePlaceholder(element) {
   var action = function action() {
@@ -11,13 +11,12 @@ var activePlaceholder = function activePlaceholder(element) {
 
   element.on("blur", action).addClass("active");
 };
-/* Вспомогательный объект для построения графической части
-    игрового интерфейса
+/* Secondary object for constructing a graphic part of the game interface 
 */
 
 
 var ui = {
-  /* ХТМЛ кнопки начала игры
+  /* HTML buttons of game start
   */
   getNewGameHTML: function getNewGameHTML(context) {
     if (!context) {
@@ -28,7 +27,7 @@ var ui = {
     return $(newGameHTML).prependTo(context);
   },
 
-  /* ХТМЛ формы с игровыми настройками
+  /* HTML forms with game settings
   */
   getGameOptionsHTML: function getGameOptionsHTML(context) {
     if (!context) {
@@ -39,7 +38,7 @@ var ui = {
     return $(gameOptionsHTML).prependTo(context);
   },
 
-  /* ХТМЛ с игровым полем
+  /* HTML with game board 
   */
   getGameBoardHTML: function getGameBoardHTML(context, size) {
     if (!context) {
@@ -60,7 +59,7 @@ var ui = {
     });
   },
 
-  /* ХТМЛ с панелью счета 
+  /* HTML with score panel 
   */
   getScoreBoardHTML: function getScoreBoardHTML(context, players) {
     if (!context || players.length !== 2) {
@@ -76,7 +75,7 @@ var ui = {
     return $(scoreBoardHTML).prependTo(context);
   },
 
-  /* ХТМЛ для подсчета количества раундов / ходов в раунде
+  /* HTML for round counting/moves in a round
   */
   getGameRaundsCounterHTML: function getGameRaundsCounterHTML(context, raunds, moves) {
     if (!context) {
@@ -87,7 +86,7 @@ var ui = {
     return $(gameRaundsCounterHTML).prependTo(context);
   },
 
-  /* Кнопка вызова игрового меню
+  /* Button for calling the game menu
   */
   getGameMenuButtonHTML: function getGameMenuButtonHTML(context) {
     if (!context) {
@@ -98,7 +97,7 @@ var ui = {
     return $(gameMenuBottonHTML).prependTo(context);
   },
 
-  /* Игровое меню
+  /* Game menu 
   */
   getGameMenuHTML: function getGameMenuHTML(context) {
     if (!context) {

@@ -1,15 +1,11 @@
-/* 
-*/
-
-/* Объект с игровыми фигурами (крестик и нолик)
+/* Objects with game shapes (a cross and a notch)
 */
 var GAME_SHAPES = {
   X: 1,
   O: 0
 };
-/* Справочников типов победы:
-    победила строка, столбец, главная диагональ или побочная
-    диагональ
+/* Winning type reference book:
+    a string wins, column, main or secondary diagonal 
 */
 
 var WIN_TYPES = {
@@ -18,7 +14,7 @@ var WIN_TYPES = {
   MAIN_DIAGONAL: "MAIN_DIAGONAL",
   DIAGONAL: "DIAGONAL"
 };
-/* Вспомогательная функция для получения случайного числа
+/* Secondary function to obtain a random number
 */
 
 var getRandom = function getRandom(min, max) {

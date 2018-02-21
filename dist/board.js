@@ -1,6 +1,6 @@
-/* Объект, представляющий игровое поле
-    гэймКонтекст - селектор для вставки поля
-    сайз - размер поля - может быть от 3 до 5
+/* Object representing a playing board
+    gameContext - selector to insert a field
+    size - field size - can be from 3 to 5
 */
 var Board = function Board(gameContext) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
@@ -8,19 +8,18 @@ var Board = function Board(gameContext) {
 
   if (size < 3 || size > 5) {
     size = 3;
-    console.warn("Для наиболее комфортной игры выберите значения размерности поля от 3 до 5. Поле size автоматически установлено в 3.");
+    console.warn("For more comfortable game, please select the field dimension value from 3 to 5. The board size is automatically set to 3.");
   }
 
   ;
   this.size = size;
   this.board = [];
-  /* Заполнить поле значениями по-умолчанию
+  /* Fill in the field with default values
   */
 
   this.fill();
 };
-/* Вспомогательная функция для копирования текущего состояния
-    игрового поля
+/* Helper function to copy the current state of the game board   
 */
 
 
@@ -39,8 +38,8 @@ Board.prototype.copyBoard = function () {
 
   return board;
 };
-/* Создать хтмл представление игрового поля и повесить обработчик
-    нажатия на клетку. На каждую клетку человек может нажать только один раз
+/* Create an html view of the game board and hang up the 
+     clicking on the cell handler. Each player can click on only once
 */
 
 
@@ -53,9 +52,9 @@ Board.prototype.create = function (move) {
     move(row, column, cell);
   });
 };
-/* На программном уровне игровое поле представялет собой матрицу
-    сайз на сайз, заполненную по умолчанию -1. Эта функция заполняет матрицу
-    значениями по умолчанию.
+/* At the software level, the game board represents a size by size 
+    matrix filled with -1 by default. This function fills the 
+    matrix with default values.
 */
 
 
@@ -70,7 +69,7 @@ Board.prototype.fill = function () {
     this.board.push(row);
   }
 };
-/* Логика проверки победы
+/* Victory checking logics
 */
 
 
@@ -82,8 +81,9 @@ Board.prototype.check = function () {
   var lastIndex = this.size - 1;
 
   for (var i = 0; i < this.size; i++) {
-    /* За проверочное значение выбирается значение в перекресной клетке
-        Например для поля 3 на 3 мы будем проверять значения 00, 11, 22 - т. е. диагональ
+    /* The value in the cross-cage is taken as a check value. 
+    For example, for the board 3 on 3, we will check the values 00, 11, 22 - which is, 
+    the diagonal.             
     */
     var x = board[i][i];
     var X = true,
@@ -92,33 +92,33 @@ Board.prototype.check = function () {
         Db = i === 0;
 
     for (var j = 0; j < this.size; j++) {
-      /* Если значение -1, то увеличить счетчик пустых клеток
+      /* If the value equals -1, then increase the counter of empty cells
       */
       if (board[i][j] === -1) {
         freeCells++;
       }
-      /* Проверить строку с проверочным значением
+      /* Check the string with a verification value
       */
 
 
       if (x === -1 || board[i][j] !== x) {
         X = false;
       }
-      /* Проверить столбец с проверочным значением
+      /* Check the column with the verification value
       */
 
 
       if (x === -1 || board[j][i] !== x) {
         Y = false;
       }
-      /* На первом шаге так же проверяем главную диагональ
+      /* On the first step also check the main diagonal
       */
 
 
       if (D && (x === -1 || board[j][j] !== x)) {
         D = false;
       }
-      /* и побочную диагональ
+      /* and secondary diagonal
       */
 
 
@@ -126,8 +126,7 @@ Board.prototype.check = function () {
         Db = false;
       }
     }
-    /* Если проверка принесла результат - вовзращаем результативный объект с типом
-        победы
+    /* If checking has brought the result - return the resultant object with win type           
     */
 
 
@@ -154,7 +153,7 @@ Board.prototype.check = function () {
       break;
     }
   }
-  /* Если пустые клетки заканчиваются - то вренуть ничью
+  /* If no more empty cells - then return a draw 
   */
 
 
@@ -162,14 +161,14 @@ Board.prototype.check = function () {
     player: -1
   };
 };
-/* Игрок сделал ход
+/* Player makes move
 */
 
 
 Board.prototype.move = function (shape, row, column) {
   this.board[row][column] = shape;
 };
-/* Остановить игру и отметить победную линию
+/* Stop the game and mark the winning line
 */
 
 
@@ -228,7 +227,7 @@ Board.prototype.stop = function (winner) {
     ;
   });
 };
-/* Обновить игровое поле
+/* Update playing board 
 */
 
 

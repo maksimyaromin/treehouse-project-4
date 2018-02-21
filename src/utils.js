@@ -1,12 +1,9 @@
-/* 
-*/
-/* Объект с игровыми фигурами (крестик и нолик)
+/* Objects with game shapes (a cross and a notch)
 */
 const GAME_SHAPES = { X: 1, O: 0 };
 
-/* Справочников типов победы:
-    победила строка, столбец, главная диагональ или побочная
-    диагональ
+/* Winning type reference book:
+    a string wins, column, main or secondary diagonal 
 */
 const WIN_TYPES = {
     ROW: "ROW",
@@ -15,7 +12,7 @@ const WIN_TYPES = {
     DIAGONAL: "DIAGONAL"
 };
 
-/* Вспомогательная функция для получения случайного числа
+/* Secondary function to obtain a random number
 */
 const getRandom = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;

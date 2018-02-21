@@ -2,9 +2,8 @@ function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; 
 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return _sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
 
-/* Объект с основной логикой игры
-    на вход принимает селекторы ДОМ панели настроек и 
-    игровой контекст
+/* The object with the main game logics accepts input 
+    variables DOM of the setting panel and the game context    
 */
 var Game = function Game(toolbarContext, gameContext) {
   this.toolbarContext = toolbarContext;
@@ -28,7 +27,7 @@ var Game = function Game(toolbarContext, gameContext) {
   });
   this.new();
 };
-/* Начать новую игру
+/* Start a new game
 */
 
 
@@ -43,11 +42,11 @@ Game.prototype.new = function () {
     _this.start();
   });
 };
-/* Настройка игровых параметров
-    у пользователя есть возможнотсть выбрать размер игрового поля
-    количество игроков (1 или 2)
-    задать имя для каждого игрока и выбрать его цвет
-    а так же выбрать фигуру, если пользователь играет с компьютером
+/* Game settings 
+    Player can choose a size of a playing board
+    Quantity of players (1 or 2) 
+    Set player's name  and color
+    and also choose a shape if a user plays with a computer
 */
 
 
@@ -117,9 +116,10 @@ Game.prototype.start = function () {
     return togglePlayersCount($(e.target));
   });
   togglePlayersCount(playerCountSwitch);
-  /* В случае если пользователь не указал никаких настроек то начнется 
-      игра на поле 3 на 3 с компьютером. Цвет пользователя будет красным а имя GoodKat,
-      цвет компьютера будет синим, а имя PDP-11 
+  /* If a player hasn't specified any settings  
+      then the game with a computer  on the board 3 on 3 will start. 
+      The user's color will be red and the name GoodKat, 
+  the color of the computer will be blue, and the name PDP-11
   */
 
   var btnPlay = gameOptionsHTML.find("#btnPlay");
@@ -148,19 +148,19 @@ Game.prototype.start = function () {
     _this2.gameContext.closest(".game").addClass("game-started");
   });
 };
-/* Применить игровые настройки и начать игру
+/* Apply game settings and start the game
 */
 
 
 Game.prototype.play = function (player1, player2, gameBoard) {
   var _this3 = this;
 
-  /* Добавить игроков
+  /* Add players
   */
   this.addPlayer(player1);
   this.addPlayer(player2);
-  /* Добавить ХТМЛ с панелями очков и счетчиком раундов,
-      а так же кнопку меню
+  /* Add HTML with scoring panels and counter rounds,
+       as well as a menu button
   */
 
   this.updateRaundsCounter();
@@ -169,19 +169,19 @@ Game.prototype.play = function (player1, player2, gameBoard) {
   menuButton.on("click", function () {
     return _this3.openMenu();
   });
-  /* Создать игровое поле
+  /* Create a game board
   */
 
   this.board = gameBoard;
   this.board.create(function (row, column, cell) {
     return _this3.nextMove(row, column, cell);
   });
-  /* Подготовится к первому шагу
+  /* Prepare for the first move
   */
 
   this.move();
 };
-/* Открыть меню во время игры
+/* Open menu while playing
 */
 
 
@@ -209,13 +209,13 @@ Game.prototype.openMenu = function () {
     return _this4.reload(closeMenu);
   });
 };
-/* Выбрать текущего игрока и сделать шаг, если играет компьютер
+/* Select a current player and take a move if the computer plays
 */
 
 
 Game.prototype.move = function () {
   var player = this.next;
-  this.player = player; // Выделить имя текущего игрока
+  this.player = player; // Highlight the name of a current player
 
   this.scoreBoardContext.find(".game-player").each(function (idndex, element) {
     element = $(element).removeClass("game-player_move-on");
@@ -224,11 +224,11 @@ Game.prototype.move = function () {
       element.addClass("game-player_move-on");
     }
   });
-  /* Представление текущей фигуры
+  /* View the current shape
   */
 
   this.board.boardContext.attr("data-shape", player.shape === GAME_SHAPES.X ? "x" : "o");
-  /* Компьютерный ход
+  /* Computer's move
   */
 
   if (player.isAI) {
@@ -241,7 +241,7 @@ Game.prototype.move = function () {
     this.nextMove(row, column, cell);
   }
 };
-/* Совершить ход (обработчик нажатия на клетку или автоход компьютера)
+/* Make a move (the handler of clicking on the cage or the computer's auto-move)
 */
 
 
@@ -255,8 +255,7 @@ Game.prototype.nextMove = function (row, column, cell) {
   cell.addClass("game-cell_move-on");
   this.moves++;
   this.updateRaundsCounter();
-  /* Проверять победу после достаточного числа
-      ходов
+  /* Check a winner after a sufficient number of moves
   */
 
   if (this.moves >= 2 * this.board.size - 1) {
@@ -264,39 +263,39 @@ Game.prototype.nextMove = function (row, column, cell) {
 
     if (winner) {
       this.raunds++;
-      var messenge = winner.player === -1 ? "Ничья" : "".concat(player.name, " win");
-      this.raundsCounterContext.html("<span>".concat(messenge, "</span>")); // обновить игру после 3 секунд
+      var messenge = winner.player === -1 ? "DRAW" : "".concat(player.name, " win");
+      this.raundsCounterContext.html("<span>".concat(messenge, "</span>")); // Update the game after 3 seconds
 
       setTimeout(function () {
         _this5.refresh(winner);
-      }, 3000); // остановить игру для победителя
+      }, 3000); // stop the game for the winner
 
       return this.board.stop(winner);
     }
-  } // подготовитья к следующему ходу
+  } // prepare for the next move
 
 
   return this.move();
-}; // Добавить игрока к игру
+}; // Add a player to the game
 
 
 Game.prototype.addPlayer = function (player) {
   if (player instanceof Player) {
     this.players.push(player);
   }
-}; // Обновить панель счета
+}; // Update count panel
 
 
 Game.prototype.updateScoreBoard = function () {
   if (this.scoreBoardContext) this.scoreBoardContext.remove();
   this.scoreBoardContext = ui.getScoreBoardHTML(this.gameContext, this.players);
-}; // Обновить счетчик раундов
+}; // Update rounds counter
 
 
 Game.prototype.updateRaundsCounter = function () {
   if (this.raundsCounterContext) this.raundsCounterContext.remove();
   this.raundsCounterContext = ui.getGameRaundsCounterHTML(this.gameContext, this.raunds + 1, this.moves);
-}; // Обновить игру после завершения раунда
+}; // Update the game after the round is over
 
 
 Game.prototype.refresh = function (winner) {
@@ -318,7 +317,7 @@ Game.prototype.refresh = function (winner) {
   this.moves = 0;
   this.updateRaundsCounter();
   this.move();
-}; // Сбросить игру через меню
+}; // Reset the game in menu
 
 
 Game.prototype.reload = function (closeMenu) {

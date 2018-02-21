@@ -1,12 +1,12 @@
-/* Объект, представляющий игрока
-    ид - случайное число (в нашем случае 1 или 2)
-    нэйм - имя игрока (если задано), 
-        ГудКат если не задано и ПДП-11 если играет компьютер
-    шэйп - игровая фигура
-    мув - делает ли игрок шаг (по умолчанию первыми ходят крестики)
-    колор - цвет игрока на выбор из четырех предложенных
-    скор - счет игрока
-    исАи - компьютер или игрок
+/* Object representing the player
+    id - random number (in our case 1 or 2)
+    name - player name (if specified), 
+        GoodKat if other is not specified and PDP-11 if Computer plays
+    shape - game figure
+    move - does a player make a move (X-shape moves first by default)
+    color - color of the player to choose from four
+    score - player score
+    isAI - computer or player
 */
 const Player = function (id, name, shape, color, isAI) {
     this.id = id;
@@ -17,13 +17,12 @@ const Player = function (id, name, shape, color, isAI) {
     this.score = 0;
     this.isAI = isAI;
 };
-/* Вспомогательная функция для получения случайной клетки от
-    0 до размера игрового поля
+/* Secondary function to obtain a random cell from 0 to the size of the playing board
 */
 Player.prototype.getRandomIndex = (max, min = 0) => {
     return getRandom(min, max);
 };
-/* Рекурсивная функция получения свободной клетки для хода компьютера
+/* The recursive function to obtain a free cell for the computer's move
 */
 Player.prototype.getMove = function(gameBoard) {
     let row = this.getRandomIndex(gameBoard.size - 1),
@@ -33,14 +32,15 @@ Player.prototype.getMove = function(gameBoard) {
     }
     return [ row, column ];
 };
-/* Логика компьютерного интерфейса игры.
-    Если компьютер делает первый ход, то он установит фигуру в случайную клетку.
-    Если компьютер делает ход, который меньше 2 * размер поля - 2 (т. е. если по количеству ходов 
-        не могло произойти победной ситуации), то возвращается случайная не занятая клетка.
-    Если победная ситуация могла произойти, то компьютер ищет свои перспективы на победу и возвращает 
-        победную клетку. Если шансов на победу нет, то компьютер ищет победную клетку противника
-        и пытается ему помешать.
-    Если интересных клеток не найдена то вернется случайная незанятая клетка.
+/* The logic of the computer interface of the game.
+    If a computer makes the first move, the figure will be set in a random cell.
+    If the computer makes a move that is less than 2 * the size of the field - 2 
+	(i.e., if the winning situation could not occur according to the number of moves), 
+	then a random non-occupied cell returns.
+    If the winning situation could occur, then the computer looks for its prospects 
+	for winning and returns the winning cell. If there is no chance of winning, 
+	then the computer looks for the opponent's winning cell and tries to stop him.
+    If no interesting cells are found, then a random unoccupied cell will return.
 */
 Player.prototype.calculateMove = function(gameBoard, moves) {   
     if(moves === 0) {
@@ -49,7 +49,7 @@ Player.prototype.calculateMove = function(gameBoard, moves) {
         ];
     }
     if(moves + 1 < (2 * gameBoard.size - 2)) { return this.getMove(gameBoard); }
-    // Найти мою победу
+    // Find by win
     for (let i = 0; i < gameBoard.size; i++) {
         for (let j = 0; j < gameBoard.size; j++) {
             const board = gameBoard.copyBoard();
@@ -60,7 +60,7 @@ Player.prototype.calculateMove = function(gameBoard, moves) {
             }
         }
     }
-    // Найти победу врага
+    // Find opponent's win
     for (let i = 0; i < gameBoard.size; i++) {
         for (let j = 0; j < gameBoard.size; j++) {
             const board = gameBoard.copyBoard();
@@ -75,7 +75,7 @@ Player.prototype.calculateMove = function(gameBoard, moves) {
     }
     return this.getMove(gameBoard);
 };
-// Увеличить счет
+// Enlarge account
 Player.prototype.incScore = function(score = 1) {
     this.score += score;
 };

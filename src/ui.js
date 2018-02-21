@@ -1,4 +1,4 @@
-/* Хэлпер для получения активного плэйсхолдера
+/* Helper to obtain an active placeholder
 */
 const activePlaceholder = (element) => {
     const action = () => {
@@ -11,11 +11,10 @@ const activePlaceholder = (element) => {
     element.on("blur", action).addClass("active");
 };
 
-/* Вспомогательный объект для построения графической части
-    игрового интерфейса
+/* Secondary object for constructing a graphic part of the game interface 
 */
 const ui = {
-    /* ХТМЛ кнопки начала игры
+    /* HTML buttons of game start
     */
     getNewGameHTML(context) {
         if(!context) { return; }
@@ -31,7 +30,7 @@ const ui = {
             </ul>`;
         return $(newGameHTML).prependTo(context);
     },
-    /* ХТМЛ формы с игровыми настройками
+    /* HTML forms with game settings
     */
     getGameOptionsHTML(context) {
         if(!context) { return; }
@@ -172,7 +171,7 @@ const ui = {
             </div>`;
         return $(gameOptionsHTML).prependTo(context);
     },
-    /* ХТМЛ с игровым полем
+    /* HTML with game board 
     */
     getGameBoardHTML(context, size) {
         if(!context) { return; }
@@ -191,7 +190,7 @@ const ui = {
                 "grid-template-columns": `repeat(${size}, 100px)`
             });
     },
-    /* ХТМЛ с панелью счета 
+    /* HTML with score panel 
     */
     getScoreBoardHTML(context, players) {
         if(!context || players.length !== 2) { return; }
@@ -217,7 +216,7 @@ const ui = {
         scoreBoardHTML += "</section>";
         return $(scoreBoardHTML).prependTo(context);
     },
-    /* ХТМЛ для подсчета количества раундов / ходов в раунде
+    /* HTML for round counting/moves in a round
     */
     getGameRaundsCounterHTML(context, raunds, moves) {
         if(!context) { return; }
@@ -227,14 +226,14 @@ const ui = {
             </div>`;
         return $(gameRaundsCounterHTML).prependTo(context);
     },
-    /* Кнопка вызова игрового меню
+    /* Button for calling the game menu
     */
     getGameMenuButtonHTML(context) {
         if(!context) { return; }
         const gameMenuBottonHTML = `<div class="game-menu-button" id="openMenu"></div>`;
         return $(gameMenuBottonHTML).prependTo(context);
     },
-    /* Игровое меню
+    /* Game menu 
     */
     getGameMenuHTML(context) {
         if(!context) { return; }
