@@ -1,5 +1,7 @@
 # Tic-Tac-Toe
 
+![Awesome Game Logo](assets/images/logo.jpg)
+
 Welcome to my version of the tic-tac-toe game, developed for the training program Treehouse FSJS.
 
 My version is quite a bit different from the expected. As usually the main difference is in layout - I used completely original marking and styles. To stylize the game I used the most modern techniques of CSS, such as CSS Grid Layout.
