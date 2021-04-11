@@ -1,6 +1,6 @@
 /*
     Gulpfile.js 
-    Max Eremin
+    Maksim Yaromin
     20.02.2018 22:07 
 */
 const gulp = require("gulp");
@@ -10,34 +10,40 @@ const server = require("gulp-webserver");
 
 /* Build tasks
 */
-gulp.task("clean:build", () => {
-    del("./dist/**/*");
-});
+function clean() {
+    return del([ "./dist/**/*" ]);;
+}
 
-gulp.task("build", ["clean:build"], () => 
-    gulp.src("./src/**/*.js")
-            .pipe(babel())
-            .on("error", function handleError() {
-                this.emit("end");
-            })
-            .pipe(gulp.dest("./dist"))
-);
+function scripts() {
+    return gulp.src("./src/**/*.js", { sourcemaps: false })
+        .pipe(babel())
+        .on("error", function handleError() {
+            this.emit("end");
+        })
+        .pipe(gulp.dest("./dist"));
+}
 
-gulp.task("watch:build", () => 
-    gulp.watch("./src/**/*.js", ["build"])
-);
+var build = gulp.series(clean, scripts);
+
+function watch() {
+    gulp.watch("./src/**/*.js", build);
+}
 
 /* Run app
     
     Lounch simple web server with livereload module 
     on http://localhost:9000 
 */
-gulp.task("server:start", () =>
-    gulp.src(".")
+function startServer() {
+    return gulp.src(".")
         .pipe(server({
             livereload: true,
             open: true,
             port: 9000
-        }))
-);
-gulp.task("default", [ "server:start" ]);
+        }));
+}
+
+exports.build = build;
+exports.watch = watch;
+
+exports.default = startServer;

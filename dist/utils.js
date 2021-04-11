@@ -1,3 +1,5 @@
+"use strict";
+
 /* Objects with game shapes (a cross and a notch)
 */
 var GAME_SHAPES = {

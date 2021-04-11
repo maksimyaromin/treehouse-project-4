@@ -1,3 +1,5 @@
+"use strict";
+
 /* Object representing a playing board
     gameContext - selector to insert a field
     size - field size - can be from 3 to 5

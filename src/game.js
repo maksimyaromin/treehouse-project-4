@@ -56,7 +56,7 @@ Game.prototype.start = function() {
     const changeColor = (isTwoPlayers, isSecond = false) => {
         const color = isSecond
             ? secondPlayerContext.find(`[name="secondColor"]:checked`).val()
-            : firstPlayerColor = firstPlayerContext.find(`[name="firstColor"]:checked`).val();
+            : firstPlayerContext.find(`[name="firstColor"]:checked`).val();
 
         if(color) {
             isSecond

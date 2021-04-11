@@ -1,3 +1,5 @@
+"use strict";
+
 /* Helper to obtain an active placeholder
 */
 var activePlaceholder = function activePlaceholder(element) {
